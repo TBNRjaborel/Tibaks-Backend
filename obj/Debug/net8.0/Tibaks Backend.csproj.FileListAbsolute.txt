@@ -1,0 +1,35 @@
+C:\Users\Gabriel\source\repos\Tibaks Backend\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\Gabriel\source\repos\Tibaks Backend\bin\Debug\net8.0\appsettings.json
+C:\Users\Gabriel\source\repos\Tibaks Backend\bin\Debug\net8.0\Tibaks Backend.staticwebassets.endpoints.json
+C:\Users\Gabriel\source\repos\Tibaks Backend\bin\Debug\net8.0\Tibaks Backend.exe
+C:\Users\Gabriel\source\repos\Tibaks Backend\bin\Debug\net8.0\Tibaks Backend.deps.json
+C:\Users\Gabriel\source\repos\Tibaks Backend\bin\Debug\net8.0\Tibaks Backend.runtimeconfig.json
+C:\Users\Gabriel\source\repos\Tibaks Backend\bin\Debug\net8.0\Tibaks Backend.dll
+C:\Users\Gabriel\source\repos\Tibaks Backend\bin\Debug\net8.0\Tibaks Backend.pdb
+C:\Users\Gabriel\source\repos\Tibaks Backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\Gabriel\source\repos\Tibaks Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Gabriel\source\repos\Tibaks Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Gabriel\source\repos\Tibaks Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\Tibaks Backend.csproj.AssemblyReference.cache
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\Tibaks Backend.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\Tibaks Backend.AssemblyInfoInputs.cache
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\Tibaks Backend.AssemblyInfo.cs
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\Tibaks Backend.csproj.CoreCompileInputs.cache
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\Tibaks Backend.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\Tibaks Backend.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\scopedcss\bundle\Tibaks Backend.styles.css
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\Tibaks B.A83AD3B2.Up2Date
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\Tibaks Backend.dll
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\refint\Tibaks Backend.dll
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\Tibaks Backend.pdb
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\Tibaks Backend.genruntimeconfig.cache
+C:\Users\Gabriel\source\repos\Tibaks Backend\obj\Debug\net8.0\ref\Tibaks Backend.dll
