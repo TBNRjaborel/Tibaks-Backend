@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Tibaks Backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c214902188d1bb006ffa8b90fb8994536cb2fa0c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Tibaks Backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Tibaks Backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
