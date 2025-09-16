@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Tibaks_Backend.Auth;
 using Tibaks_Backend.Models;
 
 namespace Tibaks_Backend.Data
@@ -9,7 +10,9 @@ namespace Tibaks_Backend.Data
             : base(options)
         {
         }
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
         public DbSet<Patient> Patients { get; set; }
+        public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             
