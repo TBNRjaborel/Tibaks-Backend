@@ -1,8 +1,1 @@
 .vs/
-appsettings.Production.json
-appsettings.Staging.json
-*.env
-.env
-.env.local
-.env.development
-.env.production
