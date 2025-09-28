@@ -85,7 +85,3 @@ Once running, the API should be available at:
 ```
 https://localhost:7108
 ```
-
----
-
-Let me know if you want me to **add Swagger instructions or frontend setup next!**
