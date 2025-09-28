@@ -552,3 +552,4 @@ C:\Users\Gabriel\source\repos\Tibaks-Backend\bin\Debug\net8.0\Microsoft.Identity
 C:\Users\Gabriel\source\repos\Tibaks-Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Gabriel\source\repos\Tibaks-Backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\Gabriel\source\repos\Tibaks-Backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\Gabriel\source\repos\Tibaks-Backend\bin\Debug\net8.0\BCrypt.Net-Next.dll

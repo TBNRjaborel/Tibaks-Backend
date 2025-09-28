@@ -9,7 +9,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "Tibaks_Backend.Controllers.AuthController\u002BLoginRequest",
+        "Type": "Tibaks_Backend.Models.Auth.LoginRequest",
         "IsRequired": true
       }
     ],
@@ -62,6 +62,22 @@
       {
         "Name": "request",
         "Type": "Tibaks_Backend.Controllers.AuthController\u002BRefreshRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Tibaks_Backend.Controllers.AuthController",
+    "Method": "SignUp",
+    "RelativePath": "api/Auth/signup",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Tibaks_Backend.Models.Auth.SignupRequest",
         "IsRequired": true
       }
     ],

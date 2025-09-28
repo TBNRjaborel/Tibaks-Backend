@@ -7,6 +7,9 @@ using Tibaks_Backend.Auth;
 using Tibaks_Backend.Auth.Services;
 using Tibaks_Backend.Data;
 using Tibaks_Backend.Models;
+using Tibaks_Backend.Models.Auth;
+using BCrypt.Net;
+using System.ComponentModel.DataAnnotations;
 
 namespace Tibaks_Backend.Controllers
 {
@@ -23,17 +26,11 @@ namespace Tibaks_Backend.Controllers
             _jwtService = jwtService;
         }
 
-        public class LoginRequest
-        {
-            public string Email { get; set; } = string.Empty;
-            public string Password { get; set; } = string.Empty;
-        }
-
+        
         public class TokenResponse
         {
             public string AccessToken { get; set; } = string.Empty;
             public string RefreshToken { get; set; } = string.Empty;
-            [JsonConverter(typeof(JsonStringEnumConverter))]
             public string TokenType { get; set; } = "Bearer";
             public int ExpiresIn { get; set; }
         }
@@ -42,14 +39,28 @@ namespace Tibaks_Backend.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<TokenResponse>> Login([FromBody] LoginRequest request)
         {
+            Console.WriteLine($"Login attempt for email: {request.Email}");
+            
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
             if (user == null)
+            {
+                Console.WriteLine("User not found");
                 return Unauthorized();
+            }
+            
+            Console.WriteLine($"User found: {user.Email}");
 
-            // For demo: PasswordHash assumed to be a plain hash; replace with BCrypt verification if used
-            // Here we simply compare for now
-            if (string.IsNullOrWhiteSpace(user.PasswordHash) || user.PasswordHash != request.Password)
+            
+            bool passwordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
+            Console.WriteLine($"Password verification result: {passwordValid}");
+            
+            if (string.IsNullOrWhiteSpace(user.PasswordHash) || !passwordValid)
+            {
+                Console.WriteLine("Invalid password");
                 return Unauthorized();
+            }
+            
+            Console.WriteLine("Login successful, generating tokens...");
 
             var appUser = new ApplicationUser { Id = user.Id.ToString(), Email = user.Email };
             var accessToken = _jwtService.GenerateAccessToken(appUser);
@@ -73,6 +84,59 @@ namespace Tibaks_Backend.Controllers
                 RefreshToken = refresh.Token,
                 ExpiresIn = (int)TimeSpan.FromMinutes(double.Parse(HttpContext.RequestServices.GetRequiredService<IConfiguration>()["Jwt:AccessTokenExpirationMinutes"]!)).TotalSeconds
             };
+        }
+
+        [HttpPost("signup")]
+        [AllowAnonymous]
+        public async Task<ActionResult<object>> SignUp([FromBody] SignupRequest request)
+        {
+            Console.WriteLine($"Received: {request.Email}, {request.Email}");
+            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
+            {
+                return BadRequest("Email and password are required." );
+
+            }
+            if (request.Password.Length < 6)
+                return BadRequest("Password must be at least 6 characters long.");
+
+            if (!IsValidEmail(request.Email))
+                return BadRequest("Invalid email format.");
+
+            var existingUser = await _db.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+            if (existingUser != null)
+                return Conflict("Email is already registered.");
+
+            try
+            {
+                string passwordhash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+
+                var newUser = new User
+                {
+                    Email = request.Email,
+                    PasswordHash = passwordhash
+                };
+                _db.Users.Add(newUser);
+                await _db.SaveChangesAsync();
+                return Ok(new { message = "User registered successfully", userId = newUser.Id });
+            }
+            catch (Exception)
+            {
+                
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public class RefreshRequest
@@ -134,6 +198,7 @@ namespace Tibaks_Backend.Controllers
             await _db.SaveChangesAsync();
             return NoContent();
         }
+
     }
 }
 
