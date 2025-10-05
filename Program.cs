@@ -1,10 +1,11 @@
-using Microsoft.EntityFrameworkCore;
-using Tibaks_Backend.Data;
+using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Tibaks_Backend.Auth.Services;
-using DotNetEnv;
+using Tibaks_Backend.Data;
+using Tibaks_Backend.Extensions;
 
 // Load environment variables from .env file
 //Env.Load();
@@ -18,6 +19,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 });
+
+// Inject all custom services
+builder.Services.AddApplicationServices();
 
 builder.Services.AddCors(options =>
 {
