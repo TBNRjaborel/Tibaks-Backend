@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Tibaks_Backend.Data;
@@ -11,9 +12,11 @@ using Tibaks_Backend.Data;
 namespace Tibaks_Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251005100837_AddChildren")]
+    partial class AddChildren
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,30 +71,6 @@ namespace Tibaks_Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Children");
-                });
-
-            modelBuilder.Entity("Tibaks_Backend.Models.HealthcareWorker", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("HealthcareWorkers");
                 });
 
             modelBuilder.Entity("Tibaks_Backend.Models.Patient", b =>
@@ -165,85 +144,6 @@ namespace Tibaks_Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Tibaks_Backend.Models.Vaccination", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BatchLotNumber")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("ChildId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DateAdministered")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Dosage")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<int>("DoseNumber")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("HealthcareWorkerId")
-                        .HasColumnType("text");
-
-                    b.Property<int>("VaccineId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChildId");
-
-                    b.HasIndex("HealthcareWorkerId");
-
-                    b.HasIndex("VaccineId");
-
-                    b.ToTable("Vaccinations");
-                });
-
-            modelBuilder.Entity("Tibaks_Backend.Models.Vaccine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("RecommendedDosage")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Route")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("SiteOfAdministration")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Vaccines");
                 });
 
             modelBuilder.Entity("Tibaks_Backend.Models.Child", b =>
@@ -410,31 +310,6 @@ namespace Tibaks_Backend.Migrations
 
                     b.Navigation("Mother")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Tibaks_Backend.Models.Vaccination", b =>
-                {
-                    b.HasOne("Tibaks_Backend.Models.Child", "Child")
-                        .WithMany()
-                        .HasForeignKey("ChildId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Tibaks_Backend.Models.HealthcareWorker", "HealthcareWorker")
-                        .WithMany()
-                        .HasForeignKey("HealthcareWorkerId");
-
-                    b.HasOne("Tibaks_Backend.Models.Vaccine", "Vaccine")
-                        .WithMany()
-                        .HasForeignKey("VaccineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Child");
-
-                    b.Navigation("HealthcareWorker");
-
-                    b.Navigation("Vaccine");
                 });
 #pragma warning restore 612, 618
         }

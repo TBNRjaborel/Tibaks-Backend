@@ -13,6 +13,10 @@ namespace Tibaks_Backend.Data
         public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
         public DbSet<Patient> Patients { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Child> Children { get; set; }
+        public DbSet<Vaccine> Vaccines { get; set; }
+        public DbSet<Vaccination> Vaccinations { get; set; }
+        public DbSet<HealthcareWorker> HealthcareWorkers {  get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             

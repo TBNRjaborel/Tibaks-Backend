@@ -1,10 +1,12 @@
-using Microsoft.EntityFrameworkCore;
-using Tibaks_Backend.Data;
+using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Tibaks_Backend.Auth.Services;
-using DotNetEnv;
+using Tibaks_Backend.Data;
+using Tibaks_Backend.Data.Seeders;
+using Tibaks_Backend.Extensions;
 
 // Load environment variables from .env file
 //Env.Load();
@@ -19,6 +21,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 });
 
+// Inject all custom services
+builder.Services.AddApplicationServices();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", 
@@ -31,7 +36,40 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddSwaggerGen(c =>
+{
+    // Define the Bearer scheme
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJI...\"",
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    // Require the scheme globally (or per controller if you prefer)
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+            },
+            new List<string>()
+        }
+    });
+});
+
 
 // JWT Auth
 builder.Services.AddScoped<JwtService>();
@@ -64,6 +102,9 @@ if (!string.IsNullOrWhiteSpace(jwtKey))
 }
 
 var app = builder.Build();
+
+// Seed data if fresh DB
+await MainSeeder.SeedAsync(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
