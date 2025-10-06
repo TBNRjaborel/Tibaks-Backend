@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Tibaks_Backend.Auth.Services;
 using Tibaks_Backend.Data;
+using Tibaks_Backend.Data.Seeders;
 using Tibaks_Backend.Extensions;
 
 // Load environment variables from .env file
@@ -68,6 +69,9 @@ if (!string.IsNullOrWhiteSpace(jwtKey))
 }
 
 var app = builder.Build();
+
+// Seed data if fresh DB
+await MainSeeder.SeedAsync(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
