@@ -47,6 +47,7 @@ namespace Tibaks_Backend.Services
                     Occupation = dto.Mother.Occupation,
                     ContactNumber = dto.Mother.ContactNumber,
                     TetanusToxoidStatus = dto.Mother.TetanusToxoidStatus,
+                    TetanusToxoidDate = dto.Mother.TetanusToxoidDate,
                     PhicNumber = dto.Mother.PhicNumber
                 },
                 Father = new FatherInfo
@@ -122,6 +123,7 @@ namespace Tibaks_Backend.Services
             child.Mother.Occupation = dto.Mother.Occupation;
             child.Mother.ContactNumber = dto.Mother.ContactNumber;
             child.Mother.TetanusToxoidStatus = dto.Mother.TetanusToxoidStatus;
+            child.Mother.TetanusToxoidDate = dto.Mother.TetanusToxoidDate;
             child.Mother.PhicNumber = dto.Mother.PhicNumber;
 
             // Update father
@@ -179,6 +181,7 @@ namespace Tibaks_Backend.Services
                     Occupation = child.Mother.Occupation,
                     ContactNumber = child.Mother.ContactNumber,
                     TetanusToxoidStatus = child.Mother.TetanusToxoidStatus,
+                    TetanusToxoidDate = child.Mother.TetanusToxoidDate,
                     PhicNumber = child.Mother.PhicNumber
                 },
                 Father = new FatherInfoDto
