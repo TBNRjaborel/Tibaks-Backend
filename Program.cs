@@ -3,54 +3,57 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Tibaks_Backend.Auth.Services;
 using Tibaks_Backend.Data;
 using Tibaks_Backend.Data.Seeders;
 using Tibaks_Backend.Extensions;
 
-// Load environment variables from .env file
-//Env.Load();
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-//builder.Configuration.AddEnvironmentVariables();
+// DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-
 });
 
-// Inject all custom services
+// App services
 builder.Services.AddApplicationServices();
 
+// CORS (allow dev frontends and Electron/null origins)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", 
+    options.AddPolicy("AllowFrontend",
         policy => policy
-        .WithOrigins("http://localhost:5173", "http://localhost:3000", "https://localhost:3000") // Add your frontend URLs
-                        .AllowAnyHeader()
-                        .AllowAnyMethod());
-
+            .WithOrigins("http://localhost:5173", "http://localhost:3000", "https://localhost:3000")
+            .SetIsOriginAllowed(_ => true) // allow other dev origins
+            .AllowAnyHeader()
+            .AllowAnyMethod());
 });
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Controllers + JSON options (DateOnly support; keep enums numeric)
+builder.Services.AddControllers()
+    .AddJsonOptions(o =>
+    {
+        o.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+        // If you want enums as strings instead of numbers, uncomment:
+        // o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
-
-
 builder.Services.AddSwaggerGen(c =>
 {
-    // Define the Bearer scheme
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJI...\"",
+        Description = "JWT Authorization header. Example: \"Bearer eyJhbGciOiJI...\"",
         Name = "Authorization",
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
         Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
 
-    // Require the scheme globally (or per controller if you prefer)
     c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
     {
         {
@@ -69,7 +72,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
 
 // JWT Auth
 builder.Services.AddScoped<JwtService>();
@@ -106,7 +108,7 @@ var app = builder.Build();
 // Seed data if fresh DB
 await MainSeeder.SeedAsync(app.Services);
 
-// Configure the HTTP request pipeline.
+// Pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -118,9 +120,20 @@ app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+// DateOnly JSON converter (yyyy-MM-dd)
+public sealed class DateOnlyJsonConverter : JsonConverter<DateOnly>
+{
+    private const string Format = "yyyy-MM-dd";
+
+    public override DateOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        => DateOnly.ParseExact(reader.GetString()!, Format);
+
+    public override void Write(Utf8JsonWriter writer, DateOnly value, JsonSerializerOptions options)
+        => writer.WriteStringValue(value.ToString(Format));
+}

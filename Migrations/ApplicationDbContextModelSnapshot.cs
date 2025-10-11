@@ -386,6 +386,9 @@ namespace Tibaks_Backend.Migrations
                                 .HasMaxLength(50)
                                 .HasColumnType("character varying(50)");
 
+                            b1.Property<DateOnly>("TetanusToxoidDate")
+                                .HasColumnType("date");
+
                             b1.Property<string>("TetanusToxoidStatus")
                                 .IsRequired()
                                 .HasMaxLength(100)

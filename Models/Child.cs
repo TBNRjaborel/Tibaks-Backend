@@ -97,6 +97,10 @@ namespace Tibaks_Backend.Models
 
         [Required, MaxLength(100)]
         public string TetanusToxoidStatus { get; set; } = string.Empty;
+        [Required]
+        public DateOnly TetanusToxoidDate { get; set; }
+
+
 
         [Required, MaxLength(50)]
         public string? PhicNumber { get; set; }

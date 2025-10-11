@@ -3,6 +3,8 @@ using Tibaks_Backend.Models.Enums;
 
 namespace Tibaks_Backend.DTOs.Request
 {
+    
+    
     public class ChildInputDto
     {
         public string? Image { get; set; }
@@ -41,6 +43,8 @@ namespace Tibaks_Backend.DTOs.Request
         public string? Occupation { get; set; }
         public string ContactNumber { get; set; } = string.Empty;
         public string TetanusToxoidStatus { get; set; } = string.Empty;
+        
+        public DateOnly TetanusToxoidDate { get; set; }
         public string? PhicNumber { get; set; }
     }
 
