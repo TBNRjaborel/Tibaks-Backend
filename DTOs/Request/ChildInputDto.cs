@@ -12,6 +12,7 @@ namespace Tibaks_Backend.DTOs.Request
         public AddressInfoDto Address { get; set; } = new();
         public MotherInfoDto Mother { get; set; } = new();
         public FatherInfoDto Father { get; set; } = new();
+        public string UpdatedBy { get; set; } = string.Empty;
     }
 
     public class ChildInfoDto
@@ -21,13 +22,13 @@ namespace Tibaks_Backend.DTOs.Request
         public string LastName { get; set; } = string.Empty;
         public string? Suffix { get; set; }
         public Sex Sex { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateOnly DateOfBirth { get; set; }
         public int BirthOrder { get; set; }
         public string PlaceOfDelivery { get; set; } = string.Empty;
         public string BirthWeight { get; set; } = string.Empty;
         public FeedingType FeedingType { get; set; }
-        public DateTime DateReferredForNewbornScreening { get; set; }
-        public DateTime DateAssessed { get; set; }
+        public DateOnly DateReferredForNewbornScreening { get; set; }
+        public DateOnly DateAssessed { get; set; }
     }
 
     public class AddressInfoDto

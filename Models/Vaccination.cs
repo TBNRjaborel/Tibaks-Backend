@@ -26,7 +26,7 @@ namespace Tibaks_Backend.Models
         public string Dosage { get; set; } = null!;
 
         [DataType(DataType.Date)]
-        public DateTime? DateAdministered { get; set; }
+        public DateOnly? DateAdministered { get; set; }
 
         public string? HealthcareWorkerId { get; set; }
 

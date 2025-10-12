@@ -20,6 +20,8 @@ namespace Tibaks_Backend.Services
             var child = new Child
             {
                 Image = dto.Image,
+                UpdatedBy = dto.UpdatedBy,
+                UpdatedAt = DateOnly.FromDateTime(DateTime.Now),
                 ChildInfo = new ChildInfo
                 {
                     FirstName = dto.ChildInfo.FirstName,
@@ -112,6 +114,8 @@ namespace Tibaks_Backend.Services
             child.ChildInfo.FeedingType = dto.ChildInfo.FeedingType;
             child.ChildInfo.DateReferredForNewbornScreening = dto.ChildInfo.DateReferredForNewbornScreening;
             child.ChildInfo.DateAssessed = dto.ChildInfo.DateAssessed;
+            child.UpdatedBy = dto.UpdatedBy;
+            child.UpdatedAt = DateOnly.FromDateTime(DateTime.Now);
 
             // Update address
             child.Address.HomeAddress = dto.Address.HomeAddress;

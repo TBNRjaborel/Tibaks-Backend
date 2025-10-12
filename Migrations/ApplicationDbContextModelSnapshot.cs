@@ -65,6 +65,13 @@ namespace Tibaks_Backend.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<DateOnly>("UpdatedAt")
+                        .HasColumnType("date");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Children");
@@ -181,8 +188,8 @@ namespace Tibaks_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("DateAdministered")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly?>("DateAdministered")
+                        .HasColumnType("date");
 
                     b.Property<string>("Dosage")
                         .IsRequired()
@@ -283,14 +290,14 @@ namespace Tibaks_Backend.Migrations
                                 .HasMaxLength(50)
                                 .HasColumnType("character varying(50)");
 
-                            b1.Property<DateTime>("DateAssessed")
-                                .HasColumnType("timestamp with time zone");
+                            b1.Property<DateOnly>("DateAssessed")
+                                .HasColumnType("date");
 
-                            b1.Property<DateTime>("DateOfBirth")
-                                .HasColumnType("timestamp with time zone");
+                            b1.Property<DateOnly>("DateOfBirth")
+                                .HasColumnType("date");
 
-                            b1.Property<DateTime>("DateReferredForNewbornScreening")
-                                .HasColumnType("timestamp with time zone");
+                            b1.Property<DateOnly>("DateReferredForNewbornScreening")
+                                .HasColumnType("date");
 
                             b1.Property<int>("FeedingType")
                                 .HasColumnType("integer");
