@@ -7,7 +7,7 @@
         public string BatchLotNumber { get; set; } = null!;
         public int DoseNumber { get; set; }
         public string Dosage { get; set; } = null!;
-        public DateTime? DateAdministered { get; set; }
+        public DateOnly? DateAdministered { get; set; }
         public string? HealthcareWorkerId { get; set; }
     }
 }

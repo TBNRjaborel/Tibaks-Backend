@@ -14,7 +14,7 @@ namespace Tibaks_Backend.Extensions
             services.AddScoped<IChildService, ChildService>();
             services.AddScoped<IHealthcareWorkerService, HealthcareWorkerService>();
             services.AddScoped<IVaccinationService, VaccinationService>();
-
+            services.AddScoped<IVaccineService, VaccineService>();
             return services;
         }
     }

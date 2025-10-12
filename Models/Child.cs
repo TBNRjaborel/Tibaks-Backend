@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Tibaks_Backend.Models.Enums;
@@ -25,6 +26,11 @@ namespace Tibaks_Backend.Models
 
         [Required]
         public FatherInfo Father { get; set; } = new();
+
+        [Required]
+        public string UpdatedBy { get; set; } = string.Empty;
+
+        public DateOnly UpdatedAt { get; set; }
     }
 
     // Child-specific info
@@ -47,7 +53,7 @@ namespace Tibaks_Backend.Models
         public Sex Sex { get; set; }
 
         [Required, DataType(DataType.Date)]
-        public DateTime DateOfBirth { get; set; }
+        public DateOnly DateOfBirth { get; set; }
 
         [Required]
         public int BirthOrder { get; set; }
@@ -62,10 +68,10 @@ namespace Tibaks_Backend.Models
         public FeedingType FeedingType { get; set; }
 
         [Required, DataType(DataType.Date)]
-        public DateTime DateReferredForNewbornScreening { get; set; }
+        public DateOnly DateReferredForNewbornScreening { get; set; }
 
         [Required, DataType(DataType.Date)]
-        public DateTime DateAssessed { get; set; }
+        public DateOnly DateAssessed { get; set; }
     }
 
     // Address info
@@ -122,4 +128,4 @@ namespace Tibaks_Backend.Models
         [Required, Phone, MaxLength(20)]
         public string ContactNumber { get; set; } = string.Empty;
     }
-}
+}   
