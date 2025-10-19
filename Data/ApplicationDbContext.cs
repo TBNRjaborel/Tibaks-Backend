@@ -17,6 +17,7 @@ namespace Tibaks_Backend.Data
         public DbSet<Vaccine> Vaccines { get; set; }
         public DbSet<Vaccination> Vaccinations { get; set; }
         public DbSet<HealthcareWorker> HealthcareWorkers {  get; set; }
+        public DbSet<VaccinationSchedules> VaccinationSchedules { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             

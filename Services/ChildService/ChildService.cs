@@ -4,15 +4,17 @@ using Tibaks_Backend.Models;
 using Tibaks_Backend.DTOs.Response;
 using Tibaks_Backend.DTOs.Request;
 
+
 namespace Tibaks_Backend.Services
 {
     public class ChildService : IChildService
     {
         private readonly ApplicationDbContext _context;
-
-        public ChildService(ApplicationDbContext context)
+        private readonly IVaccinationService _vaccinationService;
+        public ChildService(ApplicationDbContext context, IVaccinationService vaccinationService)
         {
             _context = context;
+            _vaccinationService = vaccinationService;
         }
 
         public async Task<ChildDto> CreateChildAsync(ChildInputDto dto)
@@ -64,6 +66,7 @@ namespace Tibaks_Backend.Services
             _context.Children.Add(child);
             await _context.SaveChangesAsync();
 
+            await _vaccinationService.InitializeSchedules(child.Id);
             return MapToChildDto(child);
         }
 
@@ -197,5 +200,40 @@ namespace Tibaks_Backend.Services
                 }
             };
         }
+
+        
+
+        //public async Task<List<ChildRecordDto>> GetChildrenWithVaccineStatus()
+        //{
+        //    int threshold = 3; // Change as needed
+
+        //    var result = await _context.Vaccinations
+        //    .GroupJoin(_context.Vaccines,
+        //               v => v.VaccineId,
+        //               vc => vc.Id,
+        //               (vacc, vaccine) => new { vacc, vaccine })
+        //    .GroupBy(x => x.vacc.ChildId)
+        //    .Join(_context.Children,
+        //          g => g.Key,
+        //          c => c.Id,
+        //          (vaccGroup, child) => new ChildRecordDto
+        //          {
+        //              ChildId = child.Id,
+        //              Name = child.ChildInfo.FirstName + " " + child.ChildInfo.LastName,
+        //              DateOfBirth = child.ChildInfo.DateOfBirth,
+        //              Sex = child.ChildInfo.Sex,
+        //              Status = vaccGroup.Count() >= threshold ? "Fully Vaccinated" :
+        //                       vaccGroup.Count() != 0 ? "Partially Vaccinated" : "Unimmunized",
+        //              VaccineType = vaccGroup.Select(x => x.vaccine.First().Name).ToList(),
+        //              Schedule = vaccGroup.Max(x => x.vacc.Schedule)
+        //          })
+        //    .ToListAsync();
+
+
+
+
+
+
+        //}
     }
 }

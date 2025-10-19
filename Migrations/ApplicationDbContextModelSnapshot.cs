@@ -202,6 +202,9 @@ namespace Tibaks_Backend.Migrations
                     b.Property<string>("HealthcareWorkerId")
                         .HasColumnType("text");
 
+                    b.Property<DateOnly>("TargetDate")
+                        .HasColumnType("date");
+
                     b.Property<int>("VaccineId")
                         .HasColumnType("integer");
 
@@ -214,6 +217,33 @@ namespace Tibaks_Backend.Migrations
                     b.HasIndex("VaccineId");
 
                     b.ToTable("Vaccinations");
+                });
+
+            modelBuilder.Entity("Tibaks_Backend.Models.VaccinationSchedules", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ChildId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly?>("NextSchedule")
+                        .HasColumnType("date");
+
+                    b.Property<int>("VaccineId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChildId");
+
+                    b.HasIndex("VaccineId");
+
+                    b.ToTable("VaccinationSchedules");
                 });
 
             modelBuilder.Entity("Tibaks_Backend.Models.Vaccine", b =>
@@ -443,6 +473,25 @@ namespace Tibaks_Backend.Migrations
                     b.Navigation("Child");
 
                     b.Navigation("HealthcareWorker");
+
+                    b.Navigation("Vaccine");
+                });
+
+            modelBuilder.Entity("Tibaks_Backend.Models.VaccinationSchedules", b =>
+                {
+                    b.HasOne("Tibaks_Backend.Models.Child", "Child")
+                        .WithMany()
+                        .HasForeignKey("ChildId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tibaks_Backend.Models.Vaccine", "Vaccine")
+                        .WithMany()
+                        .HasForeignKey("VaccineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Child");
 
                     b.Navigation("Vaccine");
                 });
