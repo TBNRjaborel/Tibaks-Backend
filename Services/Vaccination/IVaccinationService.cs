@@ -15,5 +15,6 @@ namespace Tibaks_Backend.Services
 
         Task<IEnumerable<VaccinationDto>> CreateManyAsync(List<VaccinationInputDto> requests);
         Task<IEnumerable<VaccinationDto>> UpdateManyAsync(List<VaccinationDto> requests);
+        Task InitializeSchedules(string ChildId);
     }
 }

@@ -39,5 +39,8 @@ namespace Tibaks_Backend.Models
 
         [ForeignKey(nameof(HealthcareWorkerId))]
         public HealthcareWorker? HealthcareWorker { get; set; }
+
+        [Required]
+        public DateOnly TargetDate { get; set; }
     }
 }

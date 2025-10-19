@@ -9,5 +9,7 @@
         public string Dosage { get; set; } = null!;
         public DateOnly? DateAdministered { get; set; }
         public string? HealthcareWorkerId { get; set; }
+
+        public DateOnly TargetDate { get; set; }
     }
 }
