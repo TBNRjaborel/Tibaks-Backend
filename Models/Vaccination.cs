@@ -14,16 +14,16 @@ namespace Tibaks_Backend.Models
         [Required]
         public int VaccineId { get; set; }
 
-        [Required]
+        
         [MaxLength(100)]
-        public string BatchLotNumber { get; set; } = null!;
+        public string? BatchLotNumber { get; set; } = null!;
 
         [Required]
         public int DoseNumber { get; set; }
 
-        [Required]
+        
         [MaxLength(50)]
-        public string Dosage { get; set; } = null!;
+        public string? Dosage { get; set; } = null!;
 
         [DataType(DataType.Date)]
         public DateOnly? DateAdministered { get; set; }
@@ -40,7 +40,5 @@ namespace Tibaks_Backend.Models
         [ForeignKey(nameof(HealthcareWorkerId))]
         public HealthcareWorker? HealthcareWorker { get; set; }
 
-        [Required]
-        public DateOnly TargetDate { get; set; }
     }
 }

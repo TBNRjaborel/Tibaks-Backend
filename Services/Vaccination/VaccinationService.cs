@@ -26,7 +26,7 @@ namespace Tibaks_Backend.Services
                 Dosage = dto.Dosage,
                 DateAdministered = dto.DateAdministered,
                 HealthcareWorkerId = dto.HealthcareWorkerId,
-                TargetDate = dto.TargetDate,
+                
             };
 
             _context.Vaccinations.Add(vaccination);
@@ -55,7 +55,7 @@ namespace Tibaks_Backend.Services
                     Dosage = v.Dosage,
                     DateAdministered = v.DateAdministered,
                     HealthcareWorkerId = v.HealthcareWorkerId,
-                    TargetDate = v.TargetDate,
+                    
                 })
                 .ToListAsync();
         }
@@ -79,7 +79,7 @@ namespace Tibaks_Backend.Services
             vaccination.Dosage = dto.Dosage;
             vaccination.DateAdministered = dto.DateAdministered;
             vaccination.HealthcareWorkerId = dto.HealthcareWorkerId;
-            vaccination.TargetDate = dto.TargetDate;
+            
 
             await _context.SaveChangesAsync();
             return MapToDto(vaccination);
@@ -108,7 +108,7 @@ namespace Tibaks_Backend.Services
                 Dosage = r.Dosage,
                 DateAdministered = r.DateAdministered,
                 HealthcareWorkerId = r.HealthcareWorkerId,
-                TargetDate = r.TargetDate,
+                
             }).ToList();
 
             _context.Vaccinations.AddRange(vaccinations);
@@ -137,7 +137,7 @@ namespace Tibaks_Backend.Services
                 vaccination.Dosage = request.Dosage;
                 vaccination.DateAdministered = request.DateAdministered;
                 vaccination.HealthcareWorkerId = request.HealthcareWorkerId;
-                vaccination.TargetDate = request.TargetDate;
+                
                 _context.Vaccinations.Update(vaccination);
                 updatedList.Add(MapToDto(vaccination));
             }
@@ -158,7 +158,7 @@ namespace Tibaks_Backend.Services
                 Dosage = vaccination.Dosage,
                 DateAdministered = vaccination.DateAdministered,
                 HealthcareWorkerId = vaccination.HealthcareWorkerId,
-                TargetDate = vaccination.TargetDate,
+                
             };
         }
 
@@ -172,6 +172,7 @@ namespace Tibaks_Backend.Services
                 {
                     ChildId = ChildId,
                     Vaccine = vaccine,
+
                     
 
                 });
@@ -180,5 +181,35 @@ namespace Tibaks_Backend.Services
             _context.VaccinationSchedules.AddRange(VaccinationSchedule);
             await _context.SaveChangesAsync();
         }
+
+        public async Task InitializeShots(string childId)
+        {
+            var vaccineShots = new List<(int VaccineId, int ShotCount)>
+            {
+                (1, 1),
+                (2, 1),
+                (3, 3),
+                (4, 3),
+                (5, 1),
+                (6, 3),
+                (7, 2),
+            };
+
+            var vaccinations = vaccineShots
+                .SelectMany(vs => Enumerable.Range(1, vs.ShotCount)
+                    .Select(doseNum => new Vaccination
+                    {
+                        
+                        ChildId = childId,
+                        VaccineId = vs.VaccineId,
+                        DoseNumber = doseNum,
+                        
+                    }))
+                .ToList();
+
+            _context.Vaccinations.AddRange(vaccinations);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }
