@@ -180,7 +180,6 @@ namespace Tibaks_Backend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("BatchLotNumber")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
@@ -192,7 +191,6 @@ namespace Tibaks_Backend.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("Dosage")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
@@ -201,9 +199,6 @@ namespace Tibaks_Backend.Migrations
 
                     b.Property<string>("HealthcareWorkerId")
                         .HasColumnType("text");
-
-                    b.Property<DateOnly>("TargetDate")
-                        .HasColumnType("date");
 
                     b.Property<int>("VaccineId")
                         .HasColumnType("integer");

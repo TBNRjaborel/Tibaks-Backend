@@ -67,6 +67,7 @@ namespace Tibaks_Backend.Services
             await _context.SaveChangesAsync();
 
             await _vaccinationService.InitializeSchedules(child.Id);
+            await _vaccinationService.InitializeShots(child.Id);
             return MapToChildDto(child);
         }
 
