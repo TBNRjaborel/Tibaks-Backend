@@ -47,6 +47,17 @@ namespace Tibaks_Backend.Controllers
             return Ok(vaccination);
         }
 
+        // GET: api/vaccinations/schedules/{childId}
+        [HttpGet("schedules/{childId}")]
+        public async Task<ActionResult<VaccinationScheduleDto>> GetSchedulesByChildId(string childId)
+        {
+            var schedules = await _vaccinationService.GetSchedulesByChildIdAsync(childId);
+            if (schedules == null)
+                return NotFound();
+
+            return Ok(schedules);
+        }
+
         // POST: api/vaccinations
         [HttpPost]
         public async Task<ActionResult<VaccinationDto>> Create([FromBody] VaccinationInputDto dto)
@@ -90,6 +101,21 @@ namespace Tibaks_Backend.Controllers
 
             var updatedList = await _vaccinationService.UpdateManyAsync(dtos);
             return Ok(updatedList);
+        }
+
+        // PUT: api/vaccinations/schedules
+        [HttpPut("schedules")]
+        public async Task<ActionResult<IEnumerable<VaccinationScheduleDto>>> UpdateSchedules([FromBody] VaccinationScheduleInputDto inputDto)
+        {
+            try
+            {
+                var updatedSchedules = await _vaccinationService.UpdateSchedulesAsync(inputDto);
+                return Ok(updatedSchedules);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         // DELETE: api/vaccinations/{id}
