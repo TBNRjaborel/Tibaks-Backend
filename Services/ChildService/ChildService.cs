@@ -3,6 +3,7 @@ using Tibaks_Backend.Data;
 using Tibaks_Backend.Models;
 using Tibaks_Backend.DTOs.Response;
 using Tibaks_Backend.DTOs.Request;
+using Tibaks_Backend.Models.Enums;
 
 
 namespace Tibaks_Backend.Services
@@ -202,39 +203,110 @@ namespace Tibaks_Backend.Services
             };
         }
 
-        
+        public async Task<List<ChildRecordDto>> GetChildrenWithVaccineStatus()
+        {
+            // First, get the basic vaccination data
+            var vaccinationData = await _context.Vaccinations
+                .Include(v => v.Child)
+                    .ThenInclude(c => c.ChildInfo)
+                .Include(v => v.Vaccine)
+                .GroupBy(v => v.ChildId)
+                .Select(g => new
+                {
+                    ChildId = g.Key,
+                    Child = g.First().Child!,
+                    TotalVaccinations = g.Count(),
+                    AdministeredCount = g.Count(v => v.DateAdministered != null),
+                    IncompleteVaccineIds = g.Where(v => v.DateAdministered == null)
+                                           .Select(v => v.VaccineId)
+                                           .ToList()
+                })
+                .ToListAsync();
 
-        //public async Task<List<ChildRecordDto>> GetChildrenWithVaccineStatus()
-        //{
-        //    int threshold = 3; // Change as needed
+            // Get all schedules separately
+            var allSchedules = await _context.VaccinationSchedules
+                .Include(s => s.Vaccine)
+                .ToListAsync();
 
-        //    var result = await _context.Vaccinations
-        //    .GroupJoin(_context.Vaccines,
-        //               v => v.VaccineId,
-        //               vc => vc.Id,
-        //               (vacc, vaccine) => new { vacc, vaccine })
-        //    .GroupBy(x => x.vacc.ChildId)
-        //    .Join(_context.Children,
-        //          g => g.Key,
-        //          c => c.Id,
-        //          (vaccGroup, child) => new ChildRecordDto
-        //          {
-        //              ChildId = child.Id,
-        //              Name = child.ChildInfo.FirstName + " " + child.ChildInfo.LastName,
-        //              DateOfBirth = child.ChildInfo.DateOfBirth,
-        //              Sex = child.ChildInfo.Sex,
-        //              Status = vaccGroup.Count() >= threshold ? "Fully Vaccinated" :
-        //                       vaccGroup.Count() != 0 ? "Partially Vaccinated" : "Unimmunized",
-        //              VaccineType = vaccGroup.Select(x => x.vaccine.First().Name).ToList(),
-        //              Schedule = vaccGroup.Max(x => x.vacc.Schedule)
-        //          })
-        //    .ToListAsync();
+            // Process the data in memory
+            var result = new List<ChildRecordDto>();
 
+            foreach (var item in vaccinationData)
+            {
+                // Get schedules for this child
+                var childSchedules = allSchedules.Where(s => s.ChildId == item.ChildId).ToList();
 
+                // Determine status
+                string status = "Unimmunized";
+                if (item.AdministeredCount == 0)
+                    status = "Unimmunized";
+                else if (item.AdministeredCount == item.TotalVaccinations)
+                    status = "Fully Vaccinated";
+                else
+                    status = "Partially Vaccinated";
 
+                // Find earliest schedule for incomplete vaccines
+                var earliestSchedule = childSchedules
+                    .Where(s => item.IncompleteVaccineIds.Contains(s.VaccineId) && s.NextSchedule != null)
+                    .OrderBy(s => s.NextSchedule)
+                    .FirstOrDefault();
 
+                DateOnly scheduleDate = earliestSchedule?.NextSchedule ?? default;
 
+                // Get vaccine types for that schedule date
+                var vaccineTypes = childSchedules
+                    .Where(s => s.NextSchedule == scheduleDate && s.Vaccine != null)
+                    .Select(s => s.Vaccine!.Name)
+                    .Distinct()
+                    .ToList();
 
-        //}
+                result.Add(new ChildRecordDto
+                {
+                    ChildId = item.Child.Id,
+                    Name = item.Child.ChildInfo.FirstName + " " + item.Child.ChildInfo.LastName,
+                    DateOfBirth = item.Child.ChildInfo.DateOfBirth,
+                    Sex = item.Child.ChildInfo.Sex,
+                    Status = status,
+                    Schedule = scheduleDate,
+                    VaccineType = vaccineTypes
+                });
+            }
+
+            // Handle children with no vaccinations
+            var childrenWithVaccinations = vaccinationData.Select(v => v.ChildId).ToHashSet();
+            var allChildren = await _context.Children
+                .Include(c => c.ChildInfo)
+                .Where(c => !childrenWithVaccinations.Contains(c.Id))
+                .ToListAsync();
+
+            foreach (var child in allChildren)
+            {
+                var childSchedules = allSchedules.Where(s => s.ChildId == child.Id).ToList();
+                var earliestSchedule = childSchedules
+                    .Where(s => s.NextSchedule != null)
+                    .OrderBy(s => s.NextSchedule)
+                    .FirstOrDefault();
+
+                DateOnly scheduleDate = earliestSchedule?.NextSchedule ?? default;
+                var vaccineTypes = childSchedules
+                    .Where(s => s.NextSchedule == scheduleDate && s.Vaccine != null)
+                    .Select(s => s.Vaccine!.Name)
+                    .Distinct()
+                    .ToList();
+
+                result.Add(new ChildRecordDto
+                {
+                    ChildId = child.Id,
+                    Name = child.ChildInfo.FirstName + " " + child.ChildInfo.LastName,
+                    DateOfBirth = child.ChildInfo.DateOfBirth,
+                    Sex = child.ChildInfo.Sex,
+                    Status = "Unimmunized",
+                    Schedule = scheduleDate,
+                    VaccineType = vaccineTypes
+                });
+            }
+
+            return result;
+        }
     }
 }

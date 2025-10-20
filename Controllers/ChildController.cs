@@ -42,6 +42,16 @@ namespace Tibaks_Backend.Controllers
         }
 
         /// <summary>
+        /// Get all children with their vaccination status and next scheduled vaccines
+        /// </summary>
+        [HttpGet("vaccine-status")]
+        public async Task<ActionResult<IEnumerable<ChildRecordDto>>> GetChildrenWithVaccineStatus()
+        {
+            var children = await _childService.GetChildrenWithVaccineStatus();
+            return Ok(children);
+        }
+
+        /// <summary>
         /// Get a single child by ID
         /// </summary>
         [HttpGet("{id}")]
