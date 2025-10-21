@@ -211,5 +211,64 @@ namespace Tibaks_Backend.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<VaccinationScheduleDto>> UpdateSchedulesAsync(VaccinationScheduleInputDto inputDto)
+        {
+            var schedules = await _context.VaccinationSchedules
+                .Where(vs => vs.ChildId == inputDto.ChildId)
+                .ToListAsync();
+
+            if (!schedules.Any())
+                throw new KeyNotFoundException("No vaccination schedules found for the specified child.");
+
+            foreach (var schedule in inputDto.VaccinationSchedules)
+            {
+                var existingSchedule = schedules.FirstOrDefault(vs => vs.VaccineId.ToString() == schedule.VaccineId);
+                if (existingSchedule != null)
+                {
+                    existingSchedule.NextSchedule = schedule.NextSchedule;
+                }
+                else
+                {
+                    _context.VaccinationSchedules.Add(new VaccinationSchedules
+                    {
+                        ChildId = inputDto.ChildId,
+                        VaccineId = int.Parse(schedule.VaccineId),
+                        NextSchedule = schedule.NextSchedule
+                    });
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return schedules.Select(s => new VaccinationScheduleDto
+            {
+                ChildId = s.ChildId,
+                VaccinationSchedules = schedules.Select(vs => new CreateVaccinationScheduleInputDto
+                {
+                    VaccineId = vs.VaccineId.ToString(),
+                    NextSchedule = vs.NextSchedule
+                }).ToList()
+            });
+        }
+
+        public async Task<VaccinationScheduleDto?> GetSchedulesByChildIdAsync(string childId)
+        {
+            var schedules = await _context.VaccinationSchedules
+                .Where(vs => vs.ChildId == childId)
+                .ToListAsync();
+
+            if (!schedules.Any())
+                return null;
+
+            return new VaccinationScheduleDto
+            {
+                ChildId = childId,
+                VaccinationSchedules = schedules.Select(vs => new CreateVaccinationScheduleInputDto
+                {
+                    VaccineId = vs.VaccineId.ToString(),
+                    NextSchedule = vs.NextSchedule
+                }).ToList()
+            };
+        }
     }
 }

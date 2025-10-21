@@ -11,5 +11,7 @@ namespace Tibaks_Backend.Services
         Task<IEnumerable<ChildDto>> GetAllChildrenAsync();
         Task<ChildDto?> UpdateChildAsync(string id, ChildInputDto dto);
         Task<bool> DeleteChildAsync(string id);
+
+        Task<List<ChildRecordDto>> GetChildrenWithVaccineStatus();
     }
 }
