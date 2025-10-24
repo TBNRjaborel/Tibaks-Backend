@@ -18,6 +18,8 @@ namespace Tibaks_Backend.Data
         public DbSet<Vaccination> Vaccinations { get; set; }
         public DbSet<HealthcareWorker> HealthcareWorkers {  get; set; }
         public DbSet<VaccinationSchedules> VaccinationSchedules { get; set; }
+        public DbSet<Target> Target { get; set; }
+        public DbSet<Holiday> Holiday { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             

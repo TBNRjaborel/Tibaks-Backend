@@ -308,5 +308,22 @@ namespace Tibaks_Backend.Services
 
             return result;
         }
+
+        //Dashboard Calls
+        public async Task<Dictionary<string,int>> GetVaccinationStatusCounts()
+        {
+            var children = await GetChildrenWithVaccineStatus();
+
+            var counts = children
+                .GroupBy(c => c.Status)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            return counts;
+        }
+
+        public async Task<int> GetChildrenCount()
+        {
+            return await _context.Children.CountAsync();
+        }
     }
 }

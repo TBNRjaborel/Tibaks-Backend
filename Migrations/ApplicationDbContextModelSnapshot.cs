@@ -101,6 +101,22 @@ namespace Tibaks_Backend.Migrations
                     b.ToTable("HealthcareWorkers");
                 });
 
+            modelBuilder.Entity("Tibaks_Backend.Models.Holiday", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Holiday");
+                });
+
             modelBuilder.Entity("Tibaks_Backend.Models.Patient", b =>
                 {
                     b.Property<int>("Id")
@@ -151,6 +167,22 @@ namespace Tibaks_Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Patients", (string)null);
+                });
+
+            modelBuilder.Entity("Tibaks_Backend.Models.Target", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("TargetNum")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Target");
                 });
 
             modelBuilder.Entity("Tibaks_Backend.Models.User", b =>
