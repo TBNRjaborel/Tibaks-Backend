@@ -13,5 +13,8 @@ namespace Tibaks_Backend.Services
         Task<bool> DeleteChildAsync(string id);
 
         Task<List<ChildRecordDto>> GetChildrenWithVaccineStatus();
+
+        Task<Dictionary<string, int>> GetVaccinationStatusCounts();
+        Task<int> GetChildrenCount();
     }
 }

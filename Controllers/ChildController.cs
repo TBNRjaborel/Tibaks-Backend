@@ -51,6 +51,19 @@ namespace Tibaks_Backend.Controllers
             return Ok(children);
         }
 
+        [HttpGet("vaccine-count")]
+        public async Task<ActionResult<Dictionary<string,int>>> GetVaccinationStatusCounts()
+        {
+            var count = await _childService.GetVaccinationStatusCounts();
+            return Ok(count);
+        }
+
+        [HttpGet("count")]
+        public async Task<ActionResult<int>> GetChildrenCount()
+        {
+            var count = await _childService.GetChildrenCount();
+            return Ok(count);
+        }
         /// <summary>
         /// Get a single child by ID
         /// </summary>
